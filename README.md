@@ -1,15 +1,15 @@
-# comic.*
+# comics.*
 ### Overview
 ---
 
-Comic spawner.
+Comic engine for Corona SDK.
 
 ### Functions
 ---
 
- - comic.new()
- - comic:play() 
+ - comics.new(options, onComplete)
+ - comics:play() 
 
 ---
-Copyright (c) 2017, Sebastian Mercado
+Copyright (c) 2017, Sebastian Mercado.
 All rights reserved.
