@@ -1,0 +1,20 @@
+
+frame1.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/frame1
+  rotate: false
+  xy: 2, 2
+  size: 378, 230
+  orig: 378, 230
+  offset: 0, 0
+  index: -1
+intro/oof1
+  rotate: false
+  xy: 382, 13
+  size: 148, 219
+  orig: 148, 219
+  offset: 0, 0
+  index: -1

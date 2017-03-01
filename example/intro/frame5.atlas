@@ -1,0 +1,27 @@
+
+frame5.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/boomeran5
+  rotate: false
+  xy: 2, 2
+  size: 80, 140
+  orig: 80, 140
+  offset: 0, 0
+  index: -1
+intro/speed1frame5
+  rotate: false
+  xy: 281, 179
+  size: 304, 258
+  orig: 304, 258
+  offset: 0, 0
+  index: -1
+intro/speed2frame5
+  rotate: false
+  xy: 2, 144
+  size: 277, 293
+  orig: 277, 293
+  offset: 0, 0
+  index: -1

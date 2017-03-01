@@ -1,0 +1,20 @@
+
+frame7.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/frame7
+  rotate: false
+  xy: 2, 2
+  size: 507, 173
+  orig: 507, 173
+  offset: 0, 0
+  index: -1
+intro/oofFrame7
+  rotate: true
+  xy: 511, 18
+  size: 157, 218
+  orig: 157, 218
+  offset: 0, 0
+  index: -1

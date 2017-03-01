@@ -1,0 +1,62 @@
+
+frame2.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/bodyOof1
+  rotate: false
+  xy: 82, 34
+  size: 56, 50
+  orig: 56, 50
+  offset: 0, 0
+  index: -1
+intro/feet2Oof2
+  rotate: false
+  xy: 655, 225
+  size: 22, 26
+  orig: 22, 26
+  offset: 0, 0
+  index: -1
+intro/frame2
+  rotate: false
+  xy: 2, 86
+  size: 377, 165
+  orig: 377, 165
+  offset: 0, 0
+  index: -1
+intro/hand1Oof1
+  rotate: false
+  xy: 590, 146
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+intro/hand2Oof2
+  rotate: false
+  xy: 82, 13
+  size: 23, 19
+  orig: 23, 19
+  offset: 0, 0
+  index: -1
+intro/headOof2
+  rotate: false
+  xy: 2, 2
+  size: 78, 82
+  orig: 78, 82
+  offset: 0, 0
+  index: -1
+intro/hit2
+  rotate: false
+  xy: 590, 173
+  size: 63, 78
+  orig: 63, 78
+  offset: 0, 0
+  index: -1
+intro/oona2
+  rotate: true
+  xy: 381, 73
+  size: 178, 207
+  orig: 178, 207
+  offset: 0, 0
+  index: -1

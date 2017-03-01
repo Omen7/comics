@@ -1,0 +1,27 @@
+
+frame3.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/frame3
+  rotate: true
+  xy: 2, 2
+  size: 248, 165
+  orig: 248, 165
+  offset: 0, 0
+  index: -1
+intro/hand3
+  rotate: false
+  xy: 330, 33
+  size: 131, 217
+  orig: 131, 217
+  offset: 0, 0
+  index: -1
+intro/hit3
+  rotate: true
+  xy: 169, 38
+  size: 212, 159
+  orig: 212, 159
+  offset: 0, 0
+  index: -1

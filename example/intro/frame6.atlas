@@ -1,0 +1,34 @@
+
+frame6.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/boomeran6
+  rotate: false
+  xy: 2, 2
+  size: 55, 57
+  orig: 55, 57
+  offset: 0, 0
+  index: -1
+intro/frame6
+  rotate: false
+  xy: 2, 61
+  size: 248, 165
+  orig: 248, 165
+  offset: 0, 0
+  index: -1
+intro/hitFrame6
+  rotate: false
+  xy: 400, 175
+  size: 45, 51
+  orig: 45, 51
+  offset: 0, 0
+  index: -1
+intro/targetFrame6
+  rotate: false
+  xy: 252, 65
+  size: 146, 161
+  orig: 146, 161
+  offset: 0, 0
+  index: -1
