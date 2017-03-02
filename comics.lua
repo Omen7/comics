@@ -5,6 +5,7 @@ local requireFolder = string.gsub(requirePath, "%.", "/")
 local extras = require("extras") 
 local screen = require("screen")
 local spine = require("spine")
+local sound = require("sound")
 
 local comics = {}
 ------------------------------------------- Variables
@@ -61,6 +62,7 @@ local function nextVignette(self)
 		comic.comicTimer.comic = comic
 	else
 		comic:setButtonsEnabled(true)
+		comic.canBeTapped = false
 	end
 end
 
@@ -80,6 +82,9 @@ local function onRetryButtonRelease(event)
 	local comic = retryButton.comic
 	comic.canBeTapped = false
 	comic:setButtonsEnabled(false)
+	if comic.soundButtonTapID then
+		sound.play(comic.soundButtonTapID)
+	end
 	for frameIndex = 1, #comic.frameTable do
 		local frame = comic.frameTable[frameIndex]
 		transition.cancel(frame)
@@ -101,12 +106,18 @@ local function onOkayButtonRelease(event)
 	local okayButton = event.target
 	local comic = okayButton.comic
 	comic:setButtonsEnabled(false)
+	if comic.soundButtonTapID then
+		sound.play(comic.soundButtonTapID)
+	end
 	transition.to(comic, {time = 500, alpha = 0, onComplete = onComicComplete})
 end
 
 local function tappedComic(event)
 	local comic = event.target
 	if comic.canBeTapped then
+		if comic.soundTapID then
+			sound.play(comic.soundTapID)
+		end
 		comic:nextVignette()
 	end
 end
@@ -136,6 +147,8 @@ function comics.new(options, onComplete)
 	comic.frameNumber = #options.frames
 	comic.currentFrame = 1
 	comic.frameTable = {}
+	comic.soundTapID = options.soundTapID or nil
+	comic.soundButtonTapID = options.soundButtonTapID or nil
 	
 	if comic.frameNumber < 1 then
 		error("Error. Parameter 'frames' must receive at least one frame.", 2)

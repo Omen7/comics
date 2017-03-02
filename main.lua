@@ -72,7 +72,9 @@ local options = {
 		}
 	},
 	okayButton = {x = 175, y = 85},
-	retryButton = {x = 175, y = 85}
+	retryButton = {x = 175, y = 85},
+	soundTapID = nil,
+	soundButtonTapID = nil
 }
 
 local function onComplete()
