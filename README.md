@@ -40,6 +40,10 @@ $ bower install
 ```
 The comic engine should now be installed in your project.
 
+### To-Do
+---
+Improve spine implementation to allow them to trigger sounds and particles per frame.
+
 ---
 Copyright (c) 2017, Sebastian Mercado.
 All rights reserved.
