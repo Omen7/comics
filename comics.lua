@@ -18,7 +18,7 @@ local COLOR_FADE_RECT = {0, 0.85}
 
 local TIME_FRAME_DEFAULT = 2000
 
-local OFFSET_BUTTON = 42
+local OFFSET_BUTTON = 44
 local SIZE_BUTTON = {width = 102, height = 114}
 
 local OKAY_BUTTON_DEFAULT = requireFolder.."images/continue.png"
@@ -30,6 +30,7 @@ local REPLAY_BUTTON_OVER = requireFolder.."images/replay2.png"
 local function finalizeComic(event)
 	local comic = event.target
 	transition.cancel(comic)
+	transition.cancel(comic.okayButton)
 	if comic.comicTimer then 
 		timer.cancel(comic.comicTimer)
 		comic.comicTimer = nil
@@ -122,11 +123,17 @@ local function tappedComic(event)
 	end
 end
 
+local function bounceAnimation(self)
+	transition.to(self, {time = 750, xScale = self.xScale + 0.10, yScale = self.yScale + 0.10, transition = easing.outQuad, onComplete = function()
+        transition.to(self, {time = 750, xScale = self.xScale - 0.10, yScale = self.yScale - 0.10, transition = easing.outQuad, onComplete = function()
+            bounceAnimation(self)
+        end})
+    end})
+end
+
 local function setButtonsEnabled(self, value)
 	local comic = self
 	local alpha = value and 1 or 0
-	transition.cancel(comic.okayButton)
-	transition.cancel(comic.retryButton)
 	transition.to(comic.okayButton, {time = 500, alpha = alpha})
 	transition.to(comic.retryButton, {time = 500, alpha = alpha})
 	comic.okayButton:setEnabled(value)
@@ -223,7 +230,7 @@ function comics.new(options, onComplete)
 	retryButton.x = comic.frameTable[comic.frameNumber].x - OFFSET_BUTTON * globalScale + globalScale * (retryConstructor.x or 0)
 	retryButton.y = comic.frameTable[comic.frameNumber].y + globalScale * (retryConstructor.y or 0)
 	comic:insert(retryButton)
-		
+	
 	comic.play = play
 	comic.onComplete = onComplete
 	comic.nextVignette = nextVignette
@@ -231,6 +238,8 @@ function comics.new(options, onComplete)
 	comic.retryButton = retryButton
 	comic.canBeTapped = true
 	comic.setButtonsEnabled = setButtonsEnabled
+	
+	comic.okayButton.animation = bounceAnimation(comic.okayButton)
 	
 	comic:addEventListener("tap", tappedComic)
 	comic:addEventListener("finalize", finalizeComic)
