@@ -142,6 +142,7 @@ end
 ------------------------------------------- Module functions
 function comics.new(options, onComplete)
 	options = options or {}
+	local baseDir = options.baseDir or system.ResourceDirectory
 	
 	if not (type(options) == "table") then
 		error("Error. First parameter on comics.new() should be a table.", 2)
@@ -179,6 +180,7 @@ function comics.new(options, onComplete)
 		local y = frameData.y or 0
 		
 		local spineOptions = {
+			baseDir = baseDir,
 			animationSpeed = animationSpeed,
 			useAtlas = useAtlas,
 			forceUpdate = true
