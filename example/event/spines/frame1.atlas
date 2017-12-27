@@ -1,0 +1,90 @@
+
+frame1.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/frame1
+  rotate: false
+  xy: 2, 583
+  size: 445, 410
+  orig: 445, 410
+  offset: 0, 0
+  index: -1
+intro/particle
+  rotate: false
+  xy: 788, 550
+  size: 104, 104
+  orig: 104, 104
+  offset: 0, 0
+  index: -1
+intro/shipFrame1
+  rotate: false
+  xy: 2, 2
+  size: 250, 130
+  orig: 250, 130
+  offset: 0, 0
+  index: -1
+intro/speedFrame1
+  rotate: false
+  xy: 462, 352
+  size: 239, 194
+  orig: 239, 194
+  offset: 0, 0
+  index: -1
+intro/tisue1Frame1
+  rotate: false
+  xy: 449, 548
+  size: 337, 221
+  orig: 337, 221
+  offset: 0, 0
+  index: -1
+intro/tisue2Frame1
+  rotate: true
+  xy: 788, 656
+  size: 337, 221
+  orig: 337, 221
+  offset: 0, 0
+  index: -1
+intro/tisue3Frame1
+  rotate: false
+  xy: 449, 771
+  size: 337, 222
+  orig: 337, 222
+  offset: 0, 0
+  index: -1
+intro/tisue4Frame1
+  rotate: false
+  xy: 2, 134
+  size: 337, 222
+  orig: 337, 222
+  offset: 0, 0
+  index: -1
+intro/tisue5Frame1
+  rotate: false
+  xy: 2, 358
+  size: 337, 223
+  orig: 337, 223
+  offset: 0, 0
+  index: -1
+intro/top1Frame1
+  rotate: true
+  xy: 383, 142
+  size: 439, 38
+  orig: 439, 38
+  offset: 0, 0
+  index: -1
+intro/top2Frame1
+  rotate: true
+  xy: 423, 107
+  size: 439, 37
+  orig: 439, 37
+  offset: 0, 0
+  index: -1
+intro/top3Frame1
+  rotate: true
+  xy: 341, 142
+  size: 439, 40
+  orig: 439, 40
+  offset: 0, 0
+  index: -1

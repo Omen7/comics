@@ -2,6 +2,7 @@
 local modulePath = ...
 local requirePath = modulePath.path or ""
 local requireFolder = string.gsub(requirePath, "%.", "/")
+local animation = require("animation")
 local extras = require("extras") 
 local screen = require("screen")
 local spine = require("spine")
@@ -171,29 +172,36 @@ function comics.new(options, onComplete)
 		
 		local animationSpeed = options.animationSpeed or 10
 		local skin = options.skin
+		local particlePath = options.particlePath or nil
 		local spinePath = frameData.spine
 		local useAtlas = frameData.useAtlas
-		local animation = frameData.animation
+		local animationState = frameData.animation
 		local loop = frameData.loop or false
 		local time = frameData.time or TIME_FRAME_DEFAULT
 		local x = frameData.x or 0
 		local y = frameData.y or 0
 		
+		local animationEvents = {
+			[frameData.animation] = {}
+		}
+		
 		local spineOptions = {
 			baseDir = baseDir,
 			animationSpeed = animationSpeed,
+			animationEvents = animationEvents,
+			particlePath = particlePath,
 			useAtlas = useAtlas,
 			forceUpdate = true
 		}
 		
-		local frame = spine.new(spinePath, spineOptions)
+		local frame = animation.newSpine(spinePath, spineOptions)
 		frame:setSkin(skin)
 		frame:scale(globalScale, globalScale)
 		frame.x, frame.y = x * globalScale, y * globalScale
 		frame.alpha = 0
 		comic:insert(frame)
 		
-		frame.animation = animation
+		frame.animation = animationState
 		frame.loop = loop
 		frame.time = time
 		comic.frameTable[frameIndex] = frame

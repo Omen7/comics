@@ -1,0 +1,41 @@
+
+frame2.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/frame2
+  rotate: false
+  xy: 2, 49
+  size: 451, 440
+  orig: 451, 440
+  offset: 0, 0
+  index: -1
+intro/light1Frame2
+  rotate: false
+  xy: 724, 298
+  size: 91, 92
+  orig: 91, 92
+  offset: 0, 0
+  index: -1
+intro/light2Frame2
+  rotate: false
+  xy: 724, 392
+  size: 97, 97
+  orig: 97, 97
+  offset: 0, 0
+  index: -1
+intro/shadowFrame2
+  rotate: false
+  xy: 2, 2
+  size: 191, 45
+  orig: 191, 45
+  offset: 0, 0
+  index: -1
+intro/yogotarFrame2
+  rotate: false
+  xy: 455, 109
+  size: 267, 380
+  orig: 267, 380
+  offset: 0, 0
+  index: -1

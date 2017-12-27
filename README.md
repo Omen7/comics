@@ -10,6 +10,7 @@ Simple comic engine for Corona SDK. Requires spine for loading frame animations.
 - comics.*new(**options, onComplete**)*
     - Will create a new comic. Constructor *requires* an **options** table and can accept an optional **onComplete** function that executes after the comic is closed. Options can be the following:
         - **animationSpeed.** An *optional number value* denoting the default animation speed for the spines. Default value is *10.*
+		- **particlePath.** An *optional string value* containing the path to where the particles are being stored. The path should end with a trailing slash. If the engine tries to load a particle but there's no particlePath it will log an error.
         - **skin.** A *mandatory string value* denoting the skin name of the spine. This value is constant across the board.
         - **frames.** A *mandatory table* containing the data for each of the comic's frames. At least one frame of data should be contained within the table. **frames** receives the following parameters:
             - **spine.** A *mandatory string value* containing the path for the spine.json file.
@@ -28,6 +29,13 @@ Simple comic engine for Corona SDK. Requires spine for loading frame animations.
 - comics:*play()*
     - Starts the comic animation.
 
+### Usage
+---
+
+General considerations for using particle or sound events are as follows.
+* **For particles:** If they're going to be used on a loopable frame, make sure a DESPAWN even is triggered at the end of each animation.
+* **For sounds:** Sound events shouldn't be triggered on loopable frames, otherwise user experience might be compromised.
+
 ### Installation
 ---
 Make sure the reference to this repository is included on your *bower.json* file:
@@ -42,7 +50,7 @@ The comic engine should now be installed in your project.
 
 ### To-Do
 ---
-Improve spine implementation to allow them to trigger sounds and particles per frame.
+:heavy_check_mark: ~~Improve spine implementation to allow them to trigger sounds and particles per frame.~~
 
 ---
 Copyright (c) 2017, Sebastian Mercado.

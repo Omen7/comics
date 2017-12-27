@@ -1,9 +1,15 @@
+--pcall(function() require("mobdebug").start(debugIP) end) -- ZeroBrane debugger
+--pcall(function() require("mobdebug").coro() end) -- Enable coroutine debug
 -------------------------------------------- Main
 local index = require("dependencies.index.index")("dependencies")
 local screen = require("screen")
 local comics = require("comics")
 	
-local options = {
+local function onComplete()
+	print("DONE")
+end
+	
+local comicOptions = {
 	animationSpeed = 10,
 	skin = "intro",
 	frames = {
@@ -77,14 +83,51 @@ local options = {
 	soundButtonTapID = nil
 }
 
-local function onComplete()
-	print("DONE")
+local eventComicOptions = {
+	animationSpeed = 10,
+	skin = "intro",
+	particlePath = "example/event/particlesComic/",
+	frames = {
+		[1] = {
+			spine = "example/event/spines/frame1.json",
+			useAtlas = "example/event/spines/frame1.atlas",
+			animation = "FRAME1",
+			loop = true,
+			time = 10000,
+			x = -230,
+			y = 0
+		},
+		[2] = {
+			spine = "example/event/spines/frame2.json",
+			useAtlas = "example/event/spines/frame2.atlas",
+			animation = "FRAME2",
+			loop = false,
+			time = 2000,
+			x = 230,
+			y = 0
+		}
+	},
+	okayButton = {x = 175, y = 85},
+	retryButton = {x = 175, y = 85},
+	soundTapID = nil,
+	soundButtonTapID = nil
+}
+
+local function createComic()
+	local whiteBackground = display.newRect(screen.centerX, screen.centerY, screen.width, screen.height)	
+	local comicGroup = comics.new(comicOptions, onComplete)
+	comicGroup.x = screen.centerX
+	comicGroup.y = screen.centerY
+	comicGroup:play()
 end
 
-local whiteBackground = display.newRect(screen.centerX, screen.centerY, screen.width, screen.height)
+local function createEventComic()
+	local whiteBackground = display.newRect(screen.centerX, screen.centerY, screen.width, screen.height)	
+	local comicGroup = comics.new(eventComicOptions, onComplete)
+	comicGroup.x = screen.centerX
+	comicGroup.y = screen.centerY
+	comicGroup:play()
+end
 
-local comicGroup = comics.new(options, onComplete)
-comicGroup.x = screen.centerX
-comicGroup.y = screen.centerY
-
-comicGroup:play()
+--createComic()
+createEventComic()

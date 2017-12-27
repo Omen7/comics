@@ -3,8 +3,9 @@
 	"version": "1.0",
 	"main": "comics.lua",
 	"dependencies": {
-		"index":"git@github.com:CetoBasilius/index.git",
+		"animation":"git@github.com:Yogome/animation.git",
 		"extras":"git@bitbucket.org:Zetosoft/extras.git",
+		"index":"git@github.com:CetoBasilius/index.git",
 		"logger":"git@bitbucket.org:Zetosoft/logger.git",
 		"screen":"git@bitbucket.org:Zetosoft/screen.git",
 		"spine":"git@bitbucket.org:Zetosoft/spine.git",
@@ -20,4 +21,3 @@
 	],
 	"private": true
 }
-
