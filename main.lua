@@ -1,9 +1,10 @@
---pcall(function() require("mobdebug").start(debugIP) end) -- ZeroBrane debugger
---pcall(function() require("mobdebug").coro() end) -- Enable coroutine debug
+pcall(function() require("mobdebug").start(debugIP) end) -- ZeroBrane debugger
+pcall(function() require("mobdebug").coro() end) -- Enable coroutine debug
 -------------------------------------------- Main
 local index = require("dependencies.index.index")("dependencies")
 local screen = require("screen")
 local comics = require("comics")
+local localization = require("localization")
 	
 local function onComplete()
 	print("DONE")
@@ -113,6 +114,228 @@ local eventComicOptions = {
 	soundButtonTapID = nil
 }
 
+local interactiveComicOptions = {
+	animationSpeed = 10,
+	skin = "eagle",
+	isInteractive = true,
+	frames = {
+		[1] = {
+			animationEvents = {
+				["INTRO"] = {
+					onComplete = function(event)
+						if event.loopCount >= 1 then
+							event.target:setAnimation("IDLE", {loop = true, fade = 0.2})
+						end
+					end
+				},
+				["SOLVED"] = {}
+			},
+			interactivity = {
+				delay = 2500,
+				{
+					question = {
+						operation = "3 Asteroids = ",
+						fontSize = 65, 
+					},
+					answers = {
+						{
+							defaultPath = "example/interactivity/answers/K/q01/01_on.png",
+							overPath = "example/interactivity/answers/K/q01/01_off.png",
+							scale = 0.85,
+							isCorrect = false
+						},
+						{
+							defaultPath = "example/interactivity/answers/K/q01/03_on.png",
+							overPath = "example/interactivity/answers/K/q01/03_off.png",
+							scale = 0.85,
+							isCorrect = true
+						},
+						{
+							defaultPath = "example/interactivity/answers/K/q01/02_on.png",
+							overPath = "example/interactivity/answers/K/q01/02_off.png",
+							scale = 0.85,
+							isCorrect = false
+						}
+					}
+				},
+				{
+					question = {
+						operation = "2 + 3 = ",
+						fontSize = 80, 
+					},
+					answers = {
+						{
+							text = "4", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "6", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "5", 
+							fontSize = 80,
+							isCorrect = true
+						}
+					}
+				},
+				{
+					question = {
+						imagePath = "example/interactivity/rocket.png",
+						repeatAmount = 7,
+					},
+					answers = {
+						{
+							text = "8", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "9", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "7", 
+							fontSize = 80,
+							isCorrect = true
+						}
+					}
+				},
+				{
+					question = {
+						firstText = "7 - ",
+						secondText = "- 9 - 10",
+						fontSize = 80,
+					},
+					answers = {
+						{
+							text = "4", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "6", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "8", 
+							fontSize = 80,
+							isCorrect = true
+						}
+					}
+				},
+				{
+					question = {
+						imagePath = "example/interactivity/dice.png",
+					},
+					answers = {
+						{
+							text = "5", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "9", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "8", 
+							fontSize = 80,
+							isCorrect = true
+						}
+					}
+				},
+				{
+					question = {
+						text = "Which has MORE?",
+						fontSize = 55, 
+					},
+					answers = {
+						{
+							defaultPath = "example/interactivity/answers/K/q08/03_on.png",
+							overPath = "example/interactivity/answers/K/q08/03_off.png",
+							x = -190, 
+							y = 270,
+							scale = 0.85,
+							isCorrect = false
+						},
+						{
+							defaultPath = "example/interactivity/answers/K/q08/05_on.png",
+							overPath = "example/interactivity/answers/K/q08/05_off.png",
+							x = 190, 
+							y = 270,
+							scale = 0.85,
+							isCorrect = true
+						},
+					}
+				},
+				{
+					question = {
+						text = "Which has LESS?",
+						fontSize = 55, 
+					},
+					answers = {
+						{
+							defaultPath = "example/interactivity/answers/K/q09/02_on.png",
+							overPath = "example/interactivity/answers/K/q09/02_off.png",
+							x = -190, 
+							y = 270,
+							scale = 0.85,
+							isCorrect = true
+						},
+						{
+							defaultPath = "example/interactivity/answers/K/q09/04_on.png",
+							overPath = "example/interactivity/answers/K/q09/04_off.png",
+							x = 190, 
+							y = 270,
+							scale = 0.85,
+							isCorrect = false
+						},
+					}
+				},
+				{
+					question = {
+						text = "Biggest number?",
+						fontSize = 60, 
+					},
+					answers = {
+						{
+							text = "8", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "6", 
+							fontSize = 80,
+							isCorrect = false
+						},
+						{
+							text = "9", 
+							fontSize = 80,
+							isCorrect = true
+						}
+					}
+				},
+			},
+			spine = "example/interactivity/spines/frame.json",
+			useAtlas = "example/interactivity/spines/frame.atlas",
+			animation = "INTRO",
+			outroAnimation = "SOLVED",
+			loop = false,
+			time = 1000,
+			x = 0,
+			y = -15,
+		}
+	},
+	soundAnswerID = "minigamesPop",
+	soundAnimationID = "cut"
+}
+
 local function createComic()
 	local whiteBackground = display.newRect(screen.centerX, screen.centerY, screen.width, screen.height)	
 	local comicGroup = comics.new(comicOptions, onComplete)
@@ -129,5 +352,15 @@ local function createEventComic()
 	comicGroup:play()
 end
 
+local function createInteractiveComic()
+	localization.initialize({"en", "es", "pt", "cn", "kr", "jp"})
+	local whiteBackground = display.newRect(screen.centerX, screen.centerY, screen.width, screen.height)	
+	local comicGroup = comics.new(interactiveComicOptions, onComplete)
+	comicGroup.x = screen.centerX
+	comicGroup.y = screen.centerY
+	comicGroup:play()
+end
+
 --createComic()
-createEventComic()
+--createEventComic()
+createInteractiveComic()

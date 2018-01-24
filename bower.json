@@ -7,9 +7,11 @@
 		"extras":"git@bitbucket.org:Zetosoft/extras.git",
 		"index":"git@github.com:CetoBasilius/index.git",
 		"logger":"git@bitbucket.org:Zetosoft/logger.git",
+		"localization":"git@bitbucket.org:Zetosoft/localization.git",
 		"screen":"git@bitbucket.org:Zetosoft/screen.git",
 		"spine":"git@bitbucket.org:Zetosoft/spine.git",
-		"sound":"git@bitbucket.org:Zetosoft/sound.git"
+		"sound":"git@bitbucket.org:Zetosoft/sound.git",
+		"voiceover":"git@github.com:yogome/voiceover.git"
 	},
 	"ignore": [
 		"main.lua",
@@ -17,7 +19,8 @@
 		"README.md",
 		"example/",
 		"build.settings",
-		".gitignore"
+		".gitignore",
+		"VAGRounded.ttf"
 	],
 	"private": true
 }

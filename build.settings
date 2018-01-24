@@ -1,5 +1,15 @@
 settings = {
 	orientation = {
 		default = "landscape"
-	}
+	},
+	
+	plugins = {
+		["plugin.musicStreaming"] = {
+			publisherId = "tech.scotth",
+			supportedPlatforms = {
+				iphone = true,
+				android = true, 
+			},
+		},
+	},
 }
