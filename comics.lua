@@ -60,7 +60,7 @@ local REPLAY_BUTTON_OVER = requireFolder.."images/replay2.png"
 ------------------------------------------- Local functions
 local function onComicComplete(comic)
 	if comic.onComplete and type(comic.onComplete) == "function" then
-		comic.onComplete({target = comic})
+		comic.onComplete({target = comic, onCompleteDelay = comic.onCompleteDelay})
 	end
 	
 	if not comic.isInteractive then 
@@ -576,6 +576,7 @@ function comics.new(options, onComplete)
 	comic.soundAnimationID = options.soundAnimationID or nil
 	comic.soundAnswerID = options.soundAnswerID or nil
 	comic.soundTapID = options.soundTapID or nil
+	comic.onCompleteDelay = options.onCompleteDelay or 1000
 	comic.frameNumber = #options.frames
 	comic.canShowNextFrame = true
 	comic.anchorChildren = true
