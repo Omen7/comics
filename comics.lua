@@ -60,7 +60,7 @@ local REPLAY_BUTTON_OVER = requireFolder.."images/replay2.png"
 ------------------------------------------- Local functions
 local function onComicComplete(comic)
 	if comic.onComplete and type(comic.onComplete) == "function" then
-		comic.onComplete({target = comic, onCompleteDelay = comic.onCompleteDelay})
+		comic.onComplete({target = comic})
 	end
 	
 	if not comic.isInteractive then 
@@ -488,7 +488,7 @@ local function nextVignette(self)
 		if not comic.isInteractive then 
 			comic:setButtonsEnabled(true) 
 		else
-			transition.to(comic, {time = 500, alpha = 1, onComplete = onComicComplete}) -- This deletes the comic.
+			transition.to(comic, {delay = comic.onCompleteDelay, time = 500, alpha = 1, onComplete = onComicComplete}) -- This deletes the comic.
 		end
 		comic.canBeTapped = false
 	end
@@ -532,7 +532,7 @@ local function onOkayButtonRelease(event)
 	if comic.soundButtonTapID then
 		sound.play(comic.soundButtonTapID)
 	end
-	transition.to(comic, {time = 500, alpha = 0, onComplete = onComicComplete})
+	transition.to(comic, {delay = comic.onCompleteDelay, time = 500, alpha = 0, onComplete = onComicComplete})
 end
 
 local function tappedComic(event)
@@ -576,7 +576,7 @@ function comics.new(options, onComplete)
 	comic.soundAnimationID = options.soundAnimationID or nil
 	comic.soundAnswerID = options.soundAnswerID or nil
 	comic.soundTapID = options.soundTapID or nil
-	comic.onCompleteDelay = options.onCompleteDelay or 1000
+	comic.onCompleteDelay = options.onCompleteDelay or 0
 	comic.frameNumber = #options.frames
 	comic.canShowNextFrame = true
 	comic.anchorChildren = true

@@ -6,8 +6,8 @@ local screen = require("screen")
 local comics = require("comics")
 local localization = require("localization")
 	
-local function onComplete()
-	print("DONE")
+local function onComplete(event)
+	display.remove(event.target)
 end
 	
 local comicOptions = {
@@ -118,6 +118,7 @@ local interactiveComicOptions = {
 	animationSpeed = 10,
 	skin = "eagle",
 	isInteractive = true,
+	onCompleteDelay = 6500,
 	frames = {
 		[1] = {
 			animationEvents = {
