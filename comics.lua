@@ -157,7 +157,7 @@ end
 
 local function removeProgressBar(self)
 	local progressBarContainer = self
-	if progressBarContainer.height == DEFAULT_PROGRESS_BAR_HEIGHT then
+	if progressBarContainer.height >= DEFAULT_PROGRESS_BAR_HEIGHT then
 		transition.to(progressBarContainer.progressBarGroup, {time = 500, alpha = 0, onComplete = removeSelf})
 	end
 end
