@@ -5,6 +5,7 @@ local requireFolder = string.gsub(requirePath, "%.", "/")
 local localization = require("localization")
 local animation = require("animation")
 local voiceover = require("voiceover")
+local mixpanel = require("mixpanel")
 local extras = require("extras") 
 local screen = require("screen")
 local spine = require("spine")
@@ -16,6 +17,7 @@ local comics = {}
 ------------------------------------------- Caches
 local displayRemove = display.remove
 local display = display
+local mathCeil = math.ceil
 ------------------------------------------- Constants
 local GLOBAL_SCALE = screen.height / 768
 
@@ -74,6 +76,29 @@ local function removeSelf(self)
 	end
 end
 
+local function startAnswerTimer(self)
+	local frame = self
+	
+	frame.start = system.getTimer() * 0.001
+end
+
+local function endAnswerTimer(self)
+	local frame = self
+	
+	frame.ended = system.getTimer() * 0.001
+	
+	if frame.start and frame.ended then
+		if frame.start < frame.ended then
+			frame.total = mathCeil((frame.ended - frame.start))
+			frame.totalComicTime = frame.totalComicTime + frame.total
+		else
+			frame.total = 0
+		end
+	else
+		frame.total = 0
+	end
+end
+
 local function finalizeComic(event)
 	local comic = event.target
 	transition.cancel(comic)
@@ -107,8 +132,10 @@ local function playNextVignette(event)
 	end
 end
 
-local function logEducationalSession()
-	-- This function will send a table with the results of the evaluation wherever it needs to be sent. It'll either return a table or log a mixpanel event. Table name is resultTable. 
+local function logEducationalSession(self)
+	local frame = self
+	
+	mixpanel.logEvent("comicEnd", {correctAnswers = frame.totalCorrectAnswers, totalQuestions = #frame.questionsTable, totalTime = frame.totalComicTime})	
 end
 
 local function setSkin(self, skin)
@@ -127,7 +154,7 @@ local function displayNextInteraction(self)
 		self:displayQuestion()
 		self:displayAnswers()
 	else
-		logEducationalSession()
+		logEducationalSession(self)
 		self.comic.canShowNextFrame = true
 		if self.outroAnimation then 
 			self:setAnimation(self.outroAnimation) 
@@ -204,7 +231,18 @@ local function validateAnswer(self)
 	local answer = self.target
 	local frame = answer.frame
 	
-	frame.resultTable[#frame.resultTable + 1] = answer.isCorrect
+	if answer.isCorrect then
+		frame.totalCorrectAnswers = frame.totalCorrectAnswers + 1
+	end
+	
+	endAnswerTimer(frame)
+	mixpanel.logEvent("comicAnswer", {questionId = frame.currentQuestion, correct = answer.isCorrect, time = frame.total})
+	
+	local dataIndex = #frame.resultTable + 1
+	frame.resultTable[dataIndex] = {}
+	frame.resultTable[dataIndex].questionId = frame.currentQuestion
+	frame.resultTable[dataIndex].isCorrect = answer.isCorrect
+	
 	frame.voButton:setEnabled(false)
 	frame.progressBarContainer:addProgressToBar()
 	
@@ -294,6 +332,7 @@ local function displayAnswers(self)
 	end
 	
 	playSound(1750, frame.comic.soundAnimationID)
+	startAnswerTimer(frame)
 	
 	frame.buttonTable = buttonTable
 end
@@ -455,6 +494,9 @@ local function getInteractiveData(self)
 		frame.questionsTable = questionsTable
 		frame.answersTable = answersTable
 		frame.resultTable = resultTable
+		
+		frame.totalCorrectAnswers = 0
+		frame.totalComicTime = 0
 		
 		frame.displayQuestion = displayQuestion
 		frame.displayAnswers = displayAnswers
@@ -681,6 +723,7 @@ function comics.new(options, onComplete)
 		comic.okayButton.animation = bounceAnimation(comic.okayButton)
 	else
 		comic.canBeTapped = false
+		mixpanel.logEvent("comicStarted")
 	end
 
 	comic.play = play
