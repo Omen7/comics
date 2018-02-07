@@ -418,10 +418,15 @@ local function formatSplit(questionData, questionGroup)
 	textGroup.x = textGroup.x - secondEquationText.contentWidth * 0.5 - 45
 end
 
-local function formatImage(frame, questionData, questionGroup)
+local function formatImage(frame, questionData, questionGroup, textBox)
 	local image = display.newImage(questionData.imagePath, frame.comic.baseDir)
-	image:scale(GLOBAL_SCALE, GLOBAL_SCALE)
 	questionGroup:insert(image)
+	
+	local newWidth = (image.contentWidth * textBox.contentHeight * 0.85) / image.contentHeight
+	local newHeight = (image.contentHeight * newWidth) / image.contentWidth
+	
+	image.width = newWidth
+	image.height = newHeight
 end
 
 local function formatQuestion(frame, questionData, questionGroup, textBox)
@@ -434,7 +439,7 @@ local function formatQuestion(frame, questionData, questionGroup, textBox)
 	elseif questionData.firstText and questionData.secondText then
 		formatSplit(questionData, questionGroup)
 	elseif questionData.imagePath and not questionData.repeatAmount then
-		formatImage(frame, questionData, questionGroup)
+		formatImage(frame, questionData, questionGroup, textBox)
 	end
 end
 
