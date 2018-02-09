@@ -432,7 +432,7 @@ local function formatImage(frame, questionData, questionGroup, textBox)
 	local image = display.newImage(questionData.imagePath, frame.comic.baseDir)
 	questionGroup:insert(image)
 	
-	local newWidth = (image.contentWidth * textBox.contentHeight * 0.85) / image.contentHeight
+	local newWidth = (image.contentWidth * textBox.contentHeight * 0.80) / image.contentHeight
 	local newHeight = (image.contentHeight * newWidth) / image.contentWidth
 	
 	image.width = newWidth
