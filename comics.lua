@@ -70,21 +70,13 @@ local function onComicComplete(comic)
 	end
 end
 
-local function removeSelf(self)
-	if self then
-		displayRemove(self)
-	end
-end
-
-local function startAnswerTimer(self)
+local function startTimer(self)
 	local frame = self
-	
 	frame.start = system.getTimer() * 0.001
 end
 
-local function endAnswerTimer(self)
+local function endTimer(self)
 	local frame = self
-	
 	frame.ended = system.getTimer() * 0.001
 	
 	if frame.start and frame.ended then
@@ -99,6 +91,20 @@ local function endAnswerTimer(self)
 	end
 end
 
+local function removeSelf(self)
+	if self then
+		displayRemove(self)
+	end
+end
+
+local function setSkin(self, skin)
+	local comic = self
+	for frameIndex = 1, #comic.frameTable do
+		local frame = comic.frameTable[frameIndex]
+		frame:setSkin(skin)
+	end
+end
+
 local function finalizeComic(event)
 	local comic = event.target
 	transition.cancel(comic)
@@ -106,22 +112,32 @@ local function finalizeComic(event)
 	if not comic.isInteractive then 
 		transition.cancel(comic.okayButton)
 	end
+	
 	if comic.comicTimer then 
 		timer.cancel(comic.comicTimer)
 		comic.comicTimer = nil
 	end
+	
+	if comic.educationTimer then
+		timer.cancel(comic.educationTimer)
+		comic.educationTimer = nil
+	end
+	
 	if comic.replayTimer then
 		timer.cancel(comic.replayTimer)
 		comic.replayTimer = nil
 	end
+	
 	if comic.interactivityTimer then
 		timer.cancel(comic.interactivityTimer)
 		comic.interactivityTimer = nil
 	end
+	
 	if comic.nextInteractionTimer then
 		timer.cancel(comic.nextInteractionTimer)
 		comic.nextInteractionTimer = nil
 	end
+	
 	voiceover.stop()
 end
 
@@ -134,17 +150,7 @@ end
 
 local function logEducationalSession(self)
 	local frame = self
-	
-	mixpanel.logEvent("comicEnd", {correctAnswers = frame.totalCorrectAnswers, totalQuestions = #frame.questionsTable, totalTime = frame.totalComicTime})	
-end
-
-local function setSkin(self, skin)
-	local comic = self
-	
-	for frameIndex = 1, #comic.frameTable do
-		local frame = comic.frameTable[frameIndex]
-		frame:setSkin(skin)
-	end
+	mixpanel.logEvent("comicEnd", {correctAnswers = frame.totalCorrectAnswers, totalQuestions = #frame.questionsTable, totalTime = frame.totalComicTime})
 end
 
 local function displayNextInteraction(self)
@@ -235,13 +241,16 @@ local function validateAnswer(self)
 		frame.totalCorrectAnswers = frame.totalCorrectAnswers + 1
 	end
 	
-	endAnswerTimer(frame)
-	mixpanel.logEvent("comicAnswer", {questionId = frame.currentQuestion, correct = answer.isCorrect, time = frame.total})
+	endTimer(frame)
+	mixpanel.logEvent("comicAnswer", {questionId = frame.questionGroup.id, correct = answer.isCorrect, time = frame.total})
 	
 	local dataIndex = #frame.resultTable + 1
+	
 	frame.resultTable[dataIndex] = {}
-	frame.resultTable[dataIndex].questionId = frame.currentQuestion
-	frame.resultTable[dataIndex].isCorrect = answer.isCorrect
+	frame.resultTable[dataIndex].id_question = frame.questionGroup.id
+	frame.resultTable[dataIndex].id_answer = answer.id
+	frame.resultTable[dataIndex].is_correct = answer.isCorrect
+	frame.resultTable[dataIndex].time = frame.total
 	
 	frame.voButton:setEnabled(false)
 	frame.progressBarContainer:addProgressToBar()
@@ -307,6 +316,7 @@ local function displayAnswers(self)
 		buttonTable[answerIndex] = answerButton
 		buttonTable[answerIndex].isCorrect = answerData.isCorrect
 		buttonTable[answerIndex].isSelected = false
+		buttonTable[answerIndex].id = answerIndex
 		buttonTable[answerIndex].answerBox = answerBox
 			
 		if answerData.text then
@@ -332,7 +342,7 @@ local function displayAnswers(self)
 	end
 	
 	playSound(1750, frame.comic.soundAnimationID)
-	startAnswerTimer(frame)
+	frame.comic.educationTimer = timer.performWithDelay(1750, function() startTimer(frame) end)
 	
 	frame.buttonTable = buttonTable
 end
@@ -452,6 +462,7 @@ local function displayQuestion(self)
 	questionGroup.x = (questionData.x or DEFAULT_QUESTION_POSITION.x) * GLOBAL_SCALE
 	questionGroup.y = (questionData.y or DEFAULT_QUESTION_POSITION.y) * GLOBAL_SCALE
 	frame.comic:insert(questionGroup)
+	questionGroup.id = questionData.id or 0
 	
 	local textBox = display.newImage(QUESTION_DEFAULT)
 	questionGroup:insert(textBox)
@@ -489,6 +500,7 @@ local function getInteractiveData(self)
 		
 		frame.comic.canBeTapped = false
 		frame.comic.canShowNextFrame = false
+		frame.comic.resultTable = resultTable
 		
 		for tableIndex = 1, #frame.interactivity do
 			local set = frame.interactivity[tableIndex]
@@ -535,7 +547,7 @@ local function nextVignette(self)
 		if not comic.isInteractive then 
 			comic:setButtonsEnabled(true) 
 		else
-			transition.to(comic, {delay = comic.onCompleteDelay, time = 500, alpha = 1, onComplete = onComicComplete}) -- This deletes the comic.
+			transition.to(comic, {delay = comic.onCompleteDelay, time = 500, alpha = 1, onComplete = onComicComplete})
 		end
 		comic.canBeTapped = false
 	end
@@ -618,11 +630,11 @@ function comics.new(options, onComplete)
 	end
 		
 	local comic = display.newGroup()
-	comic.isInteractive = options.isInteractive or false
 	comic.soundButtonTapID = options.soundButtonTapID or nil
 	comic.soundAnimationID = options.soundAnimationID or nil
 	comic.soundAnswerID = options.soundAnswerID or nil
 	comic.soundTapID = options.soundTapID or nil
+	comic.isInteractive = options.isInteractive or false
 	comic.onCompleteDelay = options.onCompleteDelay or 0
 	comic.frameNumber = #options.frames
 	comic.canShowNextFrame = true
@@ -684,7 +696,7 @@ function comics.new(options, onComplete)
 		comic.frameTable[frameIndex] = frame
 	end
 
-	if not comic.isInteractive then
+	if comic.isInteractive then
 		comic.canBeTapped = true
 		
 		local okayConstructor = options.okayButton or {}

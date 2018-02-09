@@ -162,6 +162,7 @@ local interactiveComicOptions = {
 				{
 					question = {
 						operation = "2 + 3 = ",
+						id = 2,
 						fontSize = 80, 
 					},
 					answers = {
