@@ -697,6 +697,9 @@ function comics.new(options, onComplete)
 	end
 
 	if comic.isInteractive then
+		comic.canBeTapped = false
+		mixpanel.logEvent("comicStarted")
+	else
 		comic.canBeTapped = true
 		
 		local okayConstructor = options.okayButton or {}
@@ -738,9 +741,6 @@ function comics.new(options, onComplete)
 		comic.setButtonsEnabled = setButtonsEnabled
 		
 		comic.okayButton.animation = bounceAnimation(comic.okayButton)
-	else
-		comic.canBeTapped = false
-		mixpanel.logEvent("comicStarted")
 	end
 
 	comic.play = play
