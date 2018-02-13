@@ -13,13 +13,15 @@ local sound = require("sound")
 
 local comics = {}
 ------------------------------------------- Variables
-local fontName
+
 ------------------------------------------- Caches
 local displayRemove = display.remove
 local display = display
 local mathCeil = math.ceil
 ------------------------------------------- Constants
 local GLOBAL_SCALE = screen.height / 768
+
+local FONT_NAME = "Signika-Semibold"
 
 local OFFSET_BUTTON = 44
 local TEXTBOX_OFFSET_X = 20
@@ -323,7 +325,7 @@ local function displayAnswers(self)
 				x = answerData.offsetX or DEFAULT_ANSWER_POSITIONS[answerIndex].offsetX + answerButton.x,
 				y = answerData.offsetY or DEFAULT_ANSWER_POSITIONS[answerIndex].offsetY + answerButton.y,
 				width = answerButton.contentWidth - TEXTBOX_OFFSET_X,
-				font = fontName,   
+				font = FONT_NAME,   
 				fontSize = answerData.fontSize,
 				align = "center"
 			}
@@ -351,7 +353,7 @@ local function formatText(questionData, questionGroup, textBox)
 		x = questionData.offsetX or DEFAULT_QUESTION_POSITION.offsetX + textBox.x,
 		y = questionData.offsetY or DEFAULT_QUESTION_POSITION.offsetY + textBox.y,
 		width = textBox.contentWidth - TEXTBOX_OFFSET_X,
-		font = fontName,   
+		font = FONT_NAME,   
 		fontSize = questionData.fontSize,
 		align = "center"
 	}
@@ -366,7 +368,7 @@ local function formatOperation(questionData, questionGroup)
 	local textGroup = display.newGroup()
 	questionGroup:insert(textGroup)
 	
-	local firstEquationText = display.newText(questionData.operation, 0, 0, fontName, questionData.fontSize)
+	local firstEquationText = display.newText(questionData.operation, 0, 0, FONT_NAME, questionData.fontSize)
 	textGroup:insert(firstEquationText) 
 	
 	local equationQuestionSquare = display.newImage(QUESTION_BOX_DEFAULT)
@@ -412,14 +414,14 @@ local function formatSplit(questionData, questionGroup)
 	local textGroup = display.newGroup()
 	questionGroup:insert(textGroup)
 	
-	local firstEquationText = display.newText(questionData.firstText, 0, 0, fontName, questionData.fontSize)
+	local firstEquationText = display.newText(questionData.firstText, 0, 0, FONT_NAME, questionData.fontSize)
 	textGroup:insert(firstEquationText) 
 	
 	local equationQuestionSquare = display.newImage(QUESTION_BOX_DEFAULT)
 	equationQuestionSquare.x, equationQuestionSquare.y = firstEquationText.contentWidth * 0.5 + 40, 3
 	textGroup:insert(equationQuestionSquare) 
 	
-	local secondEquationText = display.newText(questionData.secondText, equationQuestionSquare.x + equationQuestionSquare.contentWidth * 0.5 + 10, 0, fontName, questionData.fontSize)
+	local secondEquationText = display.newText(questionData.secondText, equationQuestionSquare.x + equationQuestionSquare.contentWidth * 0.5 + 10, 0, FONT_NAME, questionData.fontSize)
 	secondEquationText.anchorX = 0
 	textGroup:insert(secondEquationText)
 	
@@ -434,7 +436,7 @@ local function formatImage(frame, questionData, questionGroup, textBox)
 	local newHeight = (image.contentHeight * newWidth) / image.contentWidth
 	
 	image.width = newWidth
-	image.height = newHeight
+	image.height = newHeight	
 end
 
 local function formatQuestion(frame, questionData, questionGroup, textBox)
@@ -622,14 +624,6 @@ end
 function comics.new(options, onComplete)
 	options = options or {}
 	local baseDir = options.baseDir or system.ResourceDirectory
-	
-	local language = localization.getLanguage()
-	
-	if language == "cn" or language == "jp" then
-		fontName = native.systemFont
-	else
-		fontName ="VAGRounded"
-	end
 	
 	if not (type(options) == "table") then
 		error("Error. First parameter on comics.new() should be a table.", 2)
