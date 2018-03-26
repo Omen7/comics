@@ -70,6 +70,23 @@ local function onComicComplete(comic)
 	end
 end
 
+local function createSkipSquare(comic)
+	local skipCount = 15
+	local skipSquare = display.newRect(-screen.width * 0.5 + 50, -screen.height * 0.5 + 50, 100, 100)
+	skipSquare.isHitTestable = true
+	skipSquare.isVisible = false
+	local skipTapCount = 0
+	skipSquare:addEventListener("tap", function()
+		skipTapCount = skipTapCount + 1
+		if skipTapCount == skipCount then
+			skipTapCount = 0
+			onComicComplete(comic)
+		end
+	end)
+
+	return skipSquare
+end
+
 local function startTimer(self)
 	local frame = self
 	frame.start = system.getTimer() * 0.001
@@ -650,6 +667,9 @@ function comics.new(options, onComplete)
 	local fadeRect = display.newRect(0, 0, screen.width2, screen.height2)
 	fadeRect:setFillColor(unpack(COLOR_FADE_RECT))
 	comic:insert(fadeRect)
+	
+	local skipSquare = createSkipSquare(comic)
+	comic:insert(skipSquare)
 	
 	for frameIndex = 1, comic.frameNumber do
 		local frameData = options.frames[frameIndex]

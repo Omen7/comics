@@ -2,9 +2,9 @@ pcall(function() require("mobdebug").start(debugIP) end) -- ZeroBrane debugger
 pcall(function() require("mobdebug").coro() end) -- Enable coroutine debug
 -------------------------------------------- Main
 local index = require("dependencies.index.index")("dependencies")
+local localization = require("localization")
 local screen = require("screen")
 local comics = require("comics")
-local localization = require("localization")
 	
 local function onComplete(event)
 	display.remove(event.target)
